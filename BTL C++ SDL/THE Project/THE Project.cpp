@@ -1,29 +1,46 @@
 #include <iostream>
 #include <SDL.h>
+#include "initDep.h"
 
 using namespace std;
 
-const int SCREEN_WIDTH = 800;
-const int SCREEN_HEIGHT = 600;
-const string WINDOW_TITLE = "TITLE";
+class Cell {
+    double x,y,w,h;
+    public:
+    Cell() {}
 
-void logSDLError(std::ostream& os, const std::string &msg, bool fatal = false);
-void initSDL(SDL_Window* &window, SDL_Renderer* &renderer);
-void quitSDL(SDL_Window* window, SDL_Renderer* renderer);
-void waitUntilKeyPressed();
+    Cell(double _x, double _y, double _w, double _h) {
+        x = _x;
+        y = _y;
+        w = _w;
+        h = _h;
+    }
+
+    void draw(SDL_Renderer* renderer) {
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);   // black
+        SDL_Rect rect;
+        rect.w = w;
+        rect.h = h;
+        rect.x = x;
+        rect.y = y;
+        SDL_RenderDrawRect(renderer, &rect);
+
+    }
+};
 
 void draw(SDL_Renderer* renderer) {
-    SDL_RenderClear(renderer);
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 155);   // white
-    SDL_Rect filled_rect;
-    filled_rect.w = SCREEN_WIDTH/4;
-    filled_rect.h = SCREEN_HEIGHT/4;
-    filled_rect.x = SCREEN_WIDTH/2 - filled_rect.w/2;
-    filled_rect.y = SCREEN_HEIGHT/2 - filled_rect.h/2;
-    SDL_RenderFillRect(renderer, &filled_rect);
+    SDL_RenderClear(renderer);
+
+
 
     SDL_RenderPresent(renderer);
 }
+
+const int ROWS = 10;
+const int COLS = 10;
+const int WIDTH = 40;
+const int HEIGHT = WIDTH;
 
 int main(int argc, char* argv[])
 {
@@ -31,8 +48,21 @@ int main(int argc, char* argv[])
     SDL_Renderer* renderer;
     initSDL(window, renderer);
 
+    //khoi tao grid
+    Cell grid[ROWS][COLS];
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 155);   // white
+    SDL_RenderClear(renderer);
+    for(int i = 0; i < ROWS; ++i) {
+        for(int j = 0; j < COLS; ++j) {
+            Cell temp(i*WIDTH+(SCREEN_WIDTH-COLS*WIDTH)/2, j*HEIGHT+(SCREEN_HEIGHT-ROWS*HEIGHT)/2, WIDTH, HEIGHT);
+            grid[i][j] = temp;
+            grid[i][j].draw(renderer);
+        }
+    }
+    SDL_RenderPresent(renderer);
+
     // Your drawing code here
-    draw(renderer);
+    //draw(renderer);
     // use SDL_RenderPresent(renderer) to show it
 
 	waitUntilKeyPressed();
@@ -40,49 +70,4 @@ int main(int argc, char* argv[])
     return 0;
 }
 
-void logSDLError(std::ostream& os, const std::string &msg, bool fatal)
-{
-    os << msg << " Error: " << SDL_GetError() << std::endl;
-    if (fatal) {
-        SDL_Quit();
-        exit(1);
-    }
-}
 
-void initSDL(SDL_Window* &window, SDL_Renderer* &renderer)
-{
-    if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
-        logSDLError(std::cout, "SDL_Init", true);
-
-    window = SDL_CreateWindow(WINDOW_TITLE.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
-    //window = SDL_CreateWindow(WINDOW_TITLE.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_FULLSCREEN_DESKTOP);
-
-    if (window == nullptr)
-        logSDLError(std::cout, "CreateWindow", true);
-
-    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-    //SDL_Renderer *renderer = SDL_CreateSoftwareRenderer(SDL_GetWindowSurface(window));
-    if (renderer == nullptr)
-        logSDLError(std::cout, "CreateRenderer", true);
-
-    SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
-    SDL_RenderSetLogicalSize(renderer, SCREEN_WIDTH, SCREEN_HEIGHT);
-}
-
-void quitSDL(SDL_Window* window, SDL_Renderer* renderer)
-{
-	SDL_DestroyRenderer(renderer);
-	SDL_DestroyWindow(window);
-	SDL_Quit();
-}
-
-void waitUntilKeyPressed()
-{
-    SDL_Event e;
-    while (true) {
-        if ( SDL_WaitEvent(&e) != 0 &&
-             (e.type == SDL_KEYDOWN || e.type == SDL_QUIT) )
-            return;
-        SDL_Delay(100);
-    }
-}

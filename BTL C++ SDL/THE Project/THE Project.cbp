@@ -39,6 +39,7 @@
 			<Add directory="C:/Users/Calputer/Desktop/INT 2215/BTL C++ SDL/SDL2-2.0.14/x86_64-w64-mingw32/lib" />
 		</Linker>
 		<Unit filename="THE Project.cpp" />
+		<Unit filename="initDep.h" />
 		<Extensions />
 	</Project>
 </CodeBlocks_project_file>
