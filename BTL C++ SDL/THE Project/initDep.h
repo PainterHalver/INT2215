@@ -1,5 +1,3 @@
-#include <iostream>
-#include <SDL.h>
 
 const int SCREEN_WIDTH = 800;
 const int SCREEN_HEIGHT = 600;
@@ -38,6 +36,7 @@ void quitSDL(SDL_Window* window, SDL_Renderer* renderer)
 {
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
+	window = NULL;
 	SDL_Quit();
 }
 

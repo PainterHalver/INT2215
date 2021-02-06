@@ -372,10 +372,12 @@
 	"begin_code.h"
 	"close_code.h"
 
-1612497436 source:c:\users\calputer\desktop\int 2215\btl c++ sdl\the project\the project.cpp
+1612534666 source:c:\users\calputer\desktop\int 2215\btl c++ sdl\the project\the project.cpp
 	<iostream>
 	<SDL.h>
+	<SDL_image.h>
 	"initDep.h"
+	"imageLoader.h"
 
 1608572791 c:\users\calputer\desktop\int 2215\btl c++ sdl\sdl2-2.0.14\i686-w64-mingw32\include\sdl2\sdl.h
 	"SDL_main.h"
@@ -746,7 +748,13 @@
 	"begin_code.h"
 	"close_code.h"
 
-1612497250 c:\users\calputer\desktop\int 2215\btl c++ sdl\the project\initdep.h
-	<iostream>
-	<SDL.h>
+1612532181 c:\users\calputer\desktop\int 2215\btl c++ sdl\the project\initdep.h
+
+1561870398 c:\users\calputer\desktop\int 2215\btl c++ sdl\sdl2_image-2.0.5\x86_64-w64-mingw32\include\sdl2\sdl_image.h
+	"SDL.h"
+	"SDL_version.h"
+	"begin_code.h"
+	"close_code.h"
+
+1612532181 c:\users\calputer\desktop\int 2215\btl c++ sdl\the project\imageloader.h
 
