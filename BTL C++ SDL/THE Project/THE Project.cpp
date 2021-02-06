@@ -11,7 +11,7 @@ class Cell {
     public:
     int i,j;
     double x,y,w,h;
-    bool hasBomb = (double)rand()/RAND_MAX < 0.5 ? true : false;
+    bool hasBomb = false;
     bool revealed = false;
 
     int neighborCount = 0;
@@ -61,9 +61,24 @@ class Cell {
         SDL_RenderFillRect(renderer, &smallRect);
     }
 
-    Cell* reveal(){
+    void reveal(Cell** grid, int ROWS, int COLS, SDL_Renderer* renderer, SDL_Texture* bombTexture, SDL_Texture** numberTexture){
         this->revealed = true;
+        this->show(renderer, bombTexture, numberTexture);
+        if(this->neighborCount == 0){
+            for(int xoff = -1; xoff <=1; ++xoff) {
+                for(int yoff = -1; yoff <=1; ++yoff) {
+                    int k = this->i+xoff;
+                    int l = this->j+yoff;
+                    if(k > -1 && k < ROWS && l > -1 && l < COLS){
+                        if(!(grid[k][l].hasBomb) && !(grid[k][l].revealed)) {
+                            grid[k][l].reveal(grid, ROWS, COLS, renderer, bombTexture, numberTexture);
+                        }
+                    }
+                }
+            }
+        }
     }
+
 
 };
 
@@ -101,6 +116,11 @@ const double GRID_START_X = (double)(SCREEN_WIDTH-COLS*WIDTH)/2;
 const double GRID_START_Y = (double)(SCREEN_HEIGHT-ROWS*HEIGHT)/2;
 const double GRID_WIDTH = COLS*WIDTH;
 const double GRID_HEIGHT = ROWS*HEIGHT;
+const int TOTALBOMBS = 10;
+
+int betweenZeroAnd(int num) {
+    return rand()*num/RAND_MAX;
+}
 
 int main(int argc, char* argv[])
 {
@@ -146,7 +166,12 @@ int main(int argc, char* argv[])
 
 
     //khoi tao grid
-    Cell grid[ROWS][COLS];
+    Cell **grid;
+    grid = new Cell *[ROWS];
+    for(int i = 0; i <ROWS; i++){
+        grid[i] = new Cell[COLS];
+    }
+    //Cell grid[ROWS][COLS];
     srand(time(0));
 
     //SDL_RenderClear(renderer);
@@ -157,13 +182,26 @@ int main(int argc, char* argv[])
             grid[i][j].show(renderer, bombTexture, numberTexture);
         }
     }
+    //SPREAD THE BOMBS
+    int bombCreated = 0;
+    while(bombCreated < TOTALBOMBS) {
+        int i = betweenZeroAnd(ROWS);
+        int j = betweenZeroAnd(COLS);
+        if(grid[i][j].hasBomb == false) {
+            grid[i][j].hasBomb = true;
+            grid[i][j].neighborCount = -1;
+            bombCreated++;
+        }
+    }
+
+
     // PUBLIC ALL KEKW BCUZ OF THIS
     // COUNT NEIGHBORS
     for(int i = 0; i < ROWS; ++i) {
         for(int j = 0; j < COLS; ++j) {
             if(grid[i][j].hasBomb) continue;
             int total = 0;
-             for(int xoff = -1; xoff <=1; ++xoff) {
+            for(int xoff = -1; xoff <=1; ++xoff) {
                 for(int yoff = -1; yoff <=1; ++yoff) {
                     int k = grid[i][j].i+xoff;
                     int l = grid[i][j].j+yoff;
@@ -177,11 +215,12 @@ int main(int argc, char* argv[])
             grid[i][j].neighborCount = total;
         }
     }
-    /*for(int i = 0; i < ROWS; ++i) {
+    /*
+    for(int i = 0; i < ROWS; ++i) {
         for(int j = 0; j < COLS; ++j) {
             grid[i][j].show(renderer, bombTexture, numberTexture);
         }
-    }*/
+    } */
 
     SDL_RenderPresent(renderer);
 
@@ -210,7 +249,7 @@ int main(int argc, char* argv[])
                 double x = e.button.x;
                 double y = e.button.y;
                 if(x > GRID_START_X && x < GRID_START_X+GRID_WIDTH && y > GRID_START_Y && y < GRID_START_Y+GRID_HEIGHT){
-                    grid[(int)(x-GRID_START_X)/WIDTH][(int)(y-GRID_START_Y)/HEIGHT].reveal()->show(renderer, bombTexture, numberTexture);
+                    grid[(int)(x-GRID_START_X)/WIDTH][(int)(y-GRID_START_Y)/HEIGHT].reveal(grid, ROWS, COLS, renderer, bombTexture, numberTexture);
                 }
             }
         }
