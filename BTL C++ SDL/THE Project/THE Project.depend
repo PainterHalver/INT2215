@@ -372,13 +372,11 @@
 	"begin_code.h"
 	"close_code.h"
 
-1612616080 source:c:\users\calputer\desktop\int 2215\btl c++ sdl\the project\the project.cpp
+1612751681 source:c:\users\calputer\desktop\int 2215\btl c++ sdl\the project\the project.cpp
 	<iostream>
 	<SDL.h>
-	<SDL_image.h>
-	<time.h>
 	"initDep.h"
-	"imageLoader.h"
+	"gameControl.h"
 
 1608572791 c:\users\calputer\desktop\int 2215\btl c++ sdl\sdl2-2.0.14\i686-w64-mingw32\include\sdl2\sdl.h
 	"SDL_main.h"
@@ -749,7 +747,7 @@
 	"begin_code.h"
 	"close_code.h"
 
-1612576026 c:\users\calputer\desktop\int 2215\btl c++ sdl\the project\initdep.h
+1612948510 c:\users\calputer\desktop\int 2215\btl c++ sdl\the project\initdep.h
 
 1561870398 c:\users\calputer\desktop\int 2215\btl c++ sdl\sdl2_image-2.0.5\x86_64-w64-mingw32\include\sdl2\sdl_image.h
 	"SDL.h"
@@ -757,5 +755,14 @@
 	"begin_code.h"
 	"close_code.h"
 
-1612532181 c:\users\calputer\desktop\int 2215\btl c++ sdl\the project\imageloader.h
+1612750890 c:\users\calputer\desktop\int 2215\btl c++ sdl\the project\imageloader.h
+
+1612750029 c:\users\calputer\desktop\int 2215\btl c++ sdl\the project\cell.h
+
+1612949650 c:\users\calputer\desktop\int 2215\btl c++ sdl\the project\gamecontrol.h
+	"Cell.h"
+	"const.h"
+	<time.h>
+
+1612751458 c:\users\calputer\desktop\int 2215\btl c++ sdl\the project\const.h
 

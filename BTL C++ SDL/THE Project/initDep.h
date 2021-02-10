@@ -1,7 +1,7 @@
 
-const int SCREEN_WIDTH = 800;
+const int SCREEN_WIDTH = 900;
 const int SCREEN_HEIGHT = 600;
-const std::string WINDOW_TITLE = "TITLE";
+const std::string WINDOW_TITLE = "Minesweeper";
 
 void logSDLError(std::ostream& os, const std::string &msg, bool fatal)
 {
@@ -40,13 +40,3 @@ void quitSDL(SDL_Window* window, SDL_Renderer* renderer)
 	SDL_Quit();
 }
 
-void waitUntilKeyPressed()
-{
-    SDL_Event e;
-    while (true) {
-        if ( SDL_WaitEvent(&e) != 0 &&
-             (e.type == SDL_KEYDOWN || e.type == SDL_QUIT) )
-            return;
-        //SDL_Delay(100);
-    }
-}
