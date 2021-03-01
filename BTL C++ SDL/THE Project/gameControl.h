@@ -117,9 +117,10 @@ void gameControl(SDL_Renderer* &renderer) {
     Cell* curHover = new Cell;
     SDL_RenderPresent(renderer);
     while (isRunning){
-        while (SDL_PollEvent(&e) != 0) {
+        while (SDL_WaitEvent(&e) != 0) {
             if (e.type == SDL_QUIT){
                 isRunning = false;
+                break;
             }
             else if (e.type == SDL_MOUSEMOTION){
                 double x = e.button.x;
