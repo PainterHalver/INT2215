@@ -117,7 +117,7 @@ void gameControl(SDL_Renderer* &renderer) {
     Cell* curHover = new Cell;
     SDL_RenderPresent(renderer);
     while (isRunning){
-        while (SDL_WaitEvent(&e) != 0) {
+        while (SDL_PollEvent(&e) != 0) {
             if (e.type == SDL_QUIT){
                 isRunning = false;
                 break;
@@ -130,7 +130,7 @@ void gameControl(SDL_Renderer* &renderer) {
                     curHover = &grid[(int)(x-GRID_START_X)/WIDTH][(int)(y-GRID_START_Y)/HEIGHT];
                     curHover->hover(renderer);
                     SDL_RenderPresent(renderer);
-                } //else { //lag wa
+                } //else { //lag
                     //curHover->unhover(renderer);
                    // SDL_RenderPresent(renderer);
                 //}
@@ -149,9 +149,11 @@ void gameControl(SDL_Renderer* &renderer) {
                         }
                     }
                 } else if(check_click_in_rect(x,y, &playAgainRect)){
+                    delete [] grid;
                     return gameControl(renderer);
                 }
             }
         }
     }
+    delete [] grid;
 }
