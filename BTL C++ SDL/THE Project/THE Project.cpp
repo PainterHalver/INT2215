@@ -1,5 +1,5 @@
 #include <iostream>
-#include "initDep.h"
+#include "initSDL.h"
 #include "gameControl.h"
 
 

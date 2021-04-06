@@ -1,8 +1,5 @@
-#include <SDL.h>
+#include "initSDL.h"
 
-const int SCREEN_WIDTH = 900;
-const int SCREEN_HEIGHT = 600;
-const std::string WINDOW_TITLE = "Minesweeper";
 
 void logSDLError(std::ostream& os, const std::string &msg, bool fatal)
 {
@@ -40,4 +37,3 @@ void quitSDL(SDL_Window* window, SDL_Renderer* renderer)
 	window = NULL;
 	SDL_Quit();
 }
-

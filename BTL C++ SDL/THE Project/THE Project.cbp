@@ -41,12 +41,15 @@
 			<Add directory="C:/Users/Calputer/Desktop/INT 2215/BTL C++ SDL/SDL2-2.0.14/x86_64-w64-mingw32/lib" />
 			<Add directory="C:/Users/Calputer/Desktop/INT 2215/BTL C++ SDL/SDL2_image-2.0.5/x86_64-w64-mingw32/lib" />
 		</Linker>
+		<Unit filename="Cell.cpp" />
 		<Unit filename="Cell.h" />
 		<Unit filename="THE Project.cpp" />
 		<Unit filename="bin/Debug/THE_mine.bmp" />
 		<Unit filename="const.h" />
+		<Unit filename="gameControl.cpp" />
 		<Unit filename="gameControl.h" />
-		<Unit filename="initDep.h" />
+		<Unit filename="initSDL.cpp" />
+		<Unit filename="initSDL.h" />
 		<Extensions />
 	</Project>
 </CodeBlocks_project_file>
