@@ -113,6 +113,12 @@ void gameControl(SDL_Renderer* &renderer) {
     bool isRunning = true;
     Cell* curHover = new Cell;
     SDL_RenderPresent(renderer);
+
+
+    int waittime = 1000.0f/FPS;
+    int framestarttime = 0;
+    int delaytime;
+
     while (isRunning){
         while (SDL_PollEvent(&e) != 0) {
             if (e.type == SDL_QUIT){
@@ -126,7 +132,7 @@ void gameControl(SDL_Renderer* &renderer) {
                     curHover->unhover(renderer);
                     curHover = &grid[(int)(x-GRID_START_X)/WIDTH][(int)(y-GRID_START_Y)/HEIGHT];
                     curHover->hover(renderer);
-                    SDL_RenderPresent(renderer);
+
                 } //else { //lag
                     //curHover->unhover(renderer);
                    // SDL_RenderPresent(renderer);
@@ -151,6 +157,13 @@ void gameControl(SDL_Renderer* &renderer) {
                 }
             }
         }
+        SDL_RenderPresent(renderer);
+
+        delaytime = waittime - (SDL_GetTicks() - framestarttime);
+        if(delaytime > 0)
+            SDL_Delay((int)delaytime);
+        framestarttime = SDL_GetTicks();
     }
+
     delete [] grid;
 }
