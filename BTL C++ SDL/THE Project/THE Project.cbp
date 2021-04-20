@@ -31,15 +31,16 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
-			<Add directory="C:/Users/Calputer/Desktop/INT 2215/BTL C++ SDL/SDL2-2.0.14/i686-w64-mingw32/include/SDL2" />
 			<Add directory="C:/Users/Calputer/Desktop/INT 2215/BTL C++ SDL/SDL2_image-2.0.5/x86_64-w64-mingw32/include/SDL2" />
+			<Add directory="../SDL2-2.0.14/x86_64-w64-mingw32/include/SDL2" />
 		</Compiler>
 		<Linker>
 			<Add option="-lmingw32 -lSDL2main -lSDL2" />
 			<Add option="-lSDL2_image" />
-			<Add directory="C:/Users/Calputer/Desktop/INT 2215/BTL C++ SDL/SDL2-2.0.14/i686-w64-mingw32/lib" />
+			<Add option="-mwindows" />
 			<Add directory="C:/Users/Calputer/Desktop/INT 2215/BTL C++ SDL/SDL2-2.0.14/x86_64-w64-mingw32/lib" />
-			<Add directory="C:/Users/Calputer/Desktop/INT 2215/BTL C++ SDL/SDL2_image-2.0.5/x86_64-w64-mingw32/lib" />
+			<Add directory="../SDL2_image-2.0.5/i686-w64-mingw32/lib" />
+			<Add directory="../SDL2_image-2.0.5/x86_64-w64-mingw32/lib" />
 		</Linker>
 		<Unit filename="Cell.cpp" />
 		<Unit filename="Cell.h" />
