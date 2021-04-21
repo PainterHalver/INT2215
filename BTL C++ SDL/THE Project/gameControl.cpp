@@ -22,10 +22,10 @@ void gameControl(SDL_Renderer* &renderer) {
     SDL_Surface* no7 = SDL_LoadBMP("7.bmp");
     SDL_Surface* no8 = SDL_LoadBMP("8.bmp");
     SDL_Surface* no9 = SDL_LoadBMP("THE_mine.bmp");
-    SDL_Surface* no10 = SDL_LoadBMP("flag.bmp");
     SDL_Surface* playAgainButton = SDL_LoadBMP("PlayAgain.bmp");
     SDL_Texture* playAgainButtonTexture = SDL_CreateTextureFromSurface(renderer, playAgainButton);
-    SDL_Texture* numberTexture[11];
+    SDL_Texture* numberTexture[9];
+    numberTexture[8] = SDL_CreateTextureFromSurface(renderer, no9);
     numberTexture[0] = SDL_CreateTextureFromSurface(renderer, no1);
     numberTexture[1] = SDL_CreateTextureFromSurface(renderer, no2);
     numberTexture[2] = SDL_CreateTextureFromSurface(renderer, no3);
@@ -34,13 +34,10 @@ void gameControl(SDL_Renderer* &renderer) {
     numberTexture[5] = SDL_CreateTextureFromSurface(renderer, no6);
     numberTexture[6] = SDL_CreateTextureFromSurface(renderer, no7);
     numberTexture[7] = SDL_CreateTextureFromSurface(renderer, no8);
-    numberTexture[8] = SDL_CreateTextureFromSurface(renderer, no9);
-    numberTexture[10] = SDL_CreateTextureFromSurface(renderer, no10);
 
     //SDL_Rect dstrect = {10,10,10,10};
     //SDL_RenderCopy(renderer, bombTexture, NULL, &dstrect);
     //SDL_RenderPresent(renderer);
-    SDL_FreeSurface(no10);
     SDL_FreeSurface(no9);
     SDL_FreeSurface(no1);
     SDL_FreeSurface(no2);
@@ -66,7 +63,7 @@ void gameControl(SDL_Renderer* &renderer) {
         for(int j = 0; j < COLS; ++j) {
             Cell temp(i, j, i*WIDTH+GRID_START_X, j*HEIGHT+GRID_START_Y, WIDTH-1, HEIGHT-1);
             grid[i][j] = temp;
-            grid[i][j].show(renderer, numberTexture);
+            grid[i][j].show(renderer, numberTexture[8], numberTexture);
         }
     }
     //SPREAD THE BOMBS
@@ -112,7 +109,7 @@ void gameControl(SDL_Renderer* &renderer) {
     SDL_Rect playAgainRect = {10, 10,107,29}; // Positioning the button
     SDL_RenderCopy(renderer, playAgainButtonTexture, NULL, &playAgainRect);
 
-    SDL_Event* e;
+    SDL_Event e;
     bool isRunning = true;
     Cell* curHover = new Cell;
     SDL_RenderPresent(renderer);
@@ -123,14 +120,14 @@ void gameControl(SDL_Renderer* &renderer) {
     int delaytime;
 
     while (isRunning){
-        while (SDL_PollEvent(e) != 0) {
-            if (e->type == SDL_QUIT){
+        while (SDL_PollEvent(&e) != 0) {
+            if (e.type == SDL_QUIT){
                 isRunning = false;
                 break;
             }
-            else if (e->type == SDL_MOUSEMOTION){
-                double x = e->button.x;
-                double y = e->button.y;
+            else if (e.type == SDL_MOUSEMOTION){
+                double x = e.button.x;
+                double y = e.button.y;
                 if(x > GRID_START_X && x < GRID_START_X+GRID_WIDTH && y > GRID_START_Y && y < GRID_START_Y+GRID_HEIGHT){
                     curHover->unhover(renderer);
                     curHover = &grid[(int)(x-GRID_START_X)/WIDTH][(int)(y-GRID_START_Y)/HEIGHT];
@@ -141,18 +138,12 @@ void gameControl(SDL_Renderer* &renderer) {
                    // SDL_RenderPresent(renderer);
                 //}
             }
-            else if (e->type == SDL_MOUSEBUTTONDOWN && e->button.button == SDL_BUTTON(SDL_BUTTON_MIDDLE)) {
-                double x = e->button.x;
-                double y = e->button.y;
-                grid[(int)(x-GRID_START_X)/WIDTH][(int)(y-GRID_START_Y)/HEIGHT].toggleFlag(renderer, numberTexture);
-            }
-            else if (e->type == SDL_MOUSEBUTTONDOWN && e->button.button == SDL_BUTTON(SDL_BUTTON_LEFT)) {
-                double x = e->button.x;
-                double y = e->button.y;
+            else if (e.type == SDL_MOUSEBUTTONDOWN) {
+                double x = e.button.x;
+                double y = e.button.y;
                 if(x > GRID_START_X && x < GRID_START_X+GRID_WIDTH && y > GRID_START_Y && y < GRID_START_Y+GRID_HEIGHT){
                     if(!(grid[(int)(x-GRID_START_X)/WIDTH][(int)(y-GRID_START_Y)/HEIGHT].hasBomb)){
                        grid[(int)(x-GRID_START_X)/WIDTH][(int)(y-GRID_START_Y)/HEIGHT].reveal(grid, ROWS, COLS, renderer, numberTexture[8], numberTexture);
-
                     } else {
                         for(int i = 0; i < ROWS; ++i) {
                             for(int j = 0; j < COLS; ++j) {

@@ -9,7 +9,6 @@ class Cell {
     double x,y,w,h;
     bool hasBomb = false;
     bool revealed = false;
-    bool isFlagged = false;
 
     int neighborCount = 0;
     bool isHovered = false;
@@ -17,15 +16,13 @@ class Cell {
 
     Cell(int _i, int _j, double _x, double _y, double _w, double _h);
 
-    void show(SDL_Renderer* renderer, SDL_Texture** numberTexture);
+    void show(SDL_Renderer* renderer, SDL_Texture* bombTexture, SDL_Texture** numberTexture);
 
     void hover(SDL_Renderer* renderer);
 
     void unhover(SDL_Renderer* renderer);
 
     void reveal(Cell** grid, int ROWS, int COLS, SDL_Renderer* renderer, SDL_Texture* bombTexture, SDL_Texture** numberTexture);
-
-    void toggleFlag(SDL_Renderer* renderer, SDL_Texture** numberTexture);
 
 };
 
