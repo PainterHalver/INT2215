@@ -22,10 +22,10 @@ void gameControl(SDL_Renderer* &renderer) {
     SDL_Surface* no7 = SDL_LoadBMP("7.bmp");
     SDL_Surface* no8 = SDL_LoadBMP("8.bmp");
     SDL_Surface* no9 = SDL_LoadBMP("THE_mine.bmp");
+    SDL_Surface* no10 = SDL_LoadBMP("youwin.bmp");
     SDL_Surface* playAgainButton = SDL_LoadBMP("PlayAgain.bmp");
     SDL_Texture* playAgainButtonTexture = SDL_CreateTextureFromSurface(renderer, playAgainButton);
-    SDL_Texture* numberTexture[9];
-    numberTexture[8] = SDL_CreateTextureFromSurface(renderer, no9);
+    SDL_Texture* numberTexture[10];
     numberTexture[0] = SDL_CreateTextureFromSurface(renderer, no1);
     numberTexture[1] = SDL_CreateTextureFromSurface(renderer, no2);
     numberTexture[2] = SDL_CreateTextureFromSurface(renderer, no3);
@@ -34,11 +34,12 @@ void gameControl(SDL_Renderer* &renderer) {
     numberTexture[5] = SDL_CreateTextureFromSurface(renderer, no6);
     numberTexture[6] = SDL_CreateTextureFromSurface(renderer, no7);
     numberTexture[7] = SDL_CreateTextureFromSurface(renderer, no8);
+    numberTexture[8] = SDL_CreateTextureFromSurface(renderer, no9);
+    numberTexture[9] = SDL_CreateTextureFromSurface(renderer, no10);
 
     //SDL_Rect dstrect = {10,10,10,10};
     //SDL_RenderCopy(renderer, bombTexture, NULL, &dstrect);
     //SDL_RenderPresent(renderer);
-    SDL_FreeSurface(no9);
     SDL_FreeSurface(no1);
     SDL_FreeSurface(no2);
     SDL_FreeSurface(no3);
@@ -47,6 +48,7 @@ void gameControl(SDL_Renderer* &renderer) {
     SDL_FreeSurface(no6);
     SDL_FreeSurface(no7);
     SDL_FreeSurface(no8);
+    SDL_FreeSurface(no9);    SDL_FreeSurface(no10);
     SDL_FreeSurface(playAgainButton);
 
     //khoi tao grid
@@ -119,7 +121,13 @@ void gameControl(SDL_Renderer* &renderer) {
     int framestarttime = 0;
     int delaytime;
 
+
+    int cellLeft = ROWS*COLS;
     while (isRunning){
+        if(cellLeft == TOTALBOMBS){
+            SDL_Rect rect = {200,10,200, 30};
+            SDL_RenderCopy(renderer, numberTexture[9], NULL, &rect);
+        }
         while (SDL_PollEvent(&e) != 0) {
             if (e.type == SDL_QUIT){
                 isRunning = false;
@@ -143,11 +151,11 @@ void gameControl(SDL_Renderer* &renderer) {
                 double y = e.button.y;
                 if(x > GRID_START_X && x < GRID_START_X+GRID_WIDTH && y > GRID_START_Y && y < GRID_START_Y+GRID_HEIGHT){
                     if(!(grid[(int)(x-GRID_START_X)/WIDTH][(int)(y-GRID_START_Y)/HEIGHT].hasBomb)){
-                       grid[(int)(x-GRID_START_X)/WIDTH][(int)(y-GRID_START_Y)/HEIGHT].reveal(grid, ROWS, COLS, renderer, numberTexture[8], numberTexture);
+                       grid[(int)(x-GRID_START_X)/WIDTH][(int)(y-GRID_START_Y)/HEIGHT].reveal(grid, ROWS, COLS, renderer, numberTexture[8], numberTexture, cellLeft);
                     } else {
                         for(int i = 0; i < ROWS; ++i) {
                             for(int j = 0; j < COLS; ++j) {
-                                grid[i][j].reveal(grid, ROWS, COLS, renderer, numberTexture[8], numberTexture);
+                                grid[i][j].reveal(grid, ROWS, COLS, renderer, numberTexture[8], numberTexture, cellLeft);
                             }
                         }
                     }

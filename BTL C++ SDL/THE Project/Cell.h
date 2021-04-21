@@ -22,7 +22,7 @@ class Cell {
 
     void unhover(SDL_Renderer* renderer);
 
-    void reveal(Cell** grid, int ROWS, int COLS, SDL_Renderer* renderer, SDL_Texture* bombTexture, SDL_Texture** numberTexture);
+    void reveal(Cell** grid, int ROWS, int COLS, SDL_Renderer* renderer, SDL_Texture* bombTexture, SDL_Texture** numberTexture, int &cellLeft);
 
 };
 

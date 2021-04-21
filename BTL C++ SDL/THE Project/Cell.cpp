@@ -45,10 +45,11 @@ void Cell::unhover(SDL_Renderer* renderer){
     SDL_RenderFillRect(renderer, &smallRect);
 }
 
-void Cell::reveal(Cell** grid, int ROWS, int COLS, SDL_Renderer* renderer, SDL_Texture* bombTexture, SDL_Texture** numberTexture){
+void Cell::reveal(Cell** grid, int ROWS, int COLS, SDL_Renderer* renderer, SDL_Texture* bombTexture, SDL_Texture** numberTexture, int &cellLeft){
     if(this->revealed) return;
     this->revealed = true;
     this->show(renderer, bombTexture, numberTexture);
+    cellLeft = cellLeft - 1;
     if(this->neighborCount == 0){
         for(int xoff = -1; xoff <=1; ++xoff) {
             for(int yoff = -1; yoff <=1; ++yoff) {
@@ -56,7 +57,7 @@ void Cell::reveal(Cell** grid, int ROWS, int COLS, SDL_Renderer* renderer, SDL_T
                 int l = this->j+yoff;
                 if(k > -1 && k < ROWS && l > -1 && l < COLS){
                     if(!(grid[k][l].hasBomb) && !(grid[k][l].revealed)) {
-                        grid[k][l].reveal(grid, ROWS, COLS, renderer, bombTexture, numberTexture);
+                        grid[k][l].reveal(grid, ROWS, COLS, renderer, bombTexture, numberTexture, cellLeft);
                     }
                 }
             }
