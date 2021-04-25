@@ -8,10 +8,36 @@ bool check_click_in_rect(int x, int y, struct SDL_Rect *r) {
     return (x >= r->x) && (y >= r->y) && (x < r->x + r->w) && (y < r->y + r->h);
 }
 
+bool checkSurround(int i, int j, Cell **grid){
+    for(int xoff = -1; xoff <=1; ++xoff) {
+        for(int yoff = -1; yoff <=1; ++yoff) {
+            int k = i+xoff;
+            int l = j+yoff;
+            if(k > -1 && k < ROWS && l > -1 && l < COLS && xoff != 0 && yoff != 0){
+                int total = 0;
+                for(int xoff2 = -1; xoff2 <=1; ++xoff2) {
+                    for(int yoff2 = -1; yoff2 <=1; ++yoff2) {
+                        int x = grid[k][l].i+xoff2;
+                        int z = grid[k][l].j+yoff2;
+                        if(x > -1 && x < ROWS && z > -1 && z < COLS && xoff2 != 0 && yoff2 != 0){
+                            if(grid[x][z].hasBomb) {
+                                total++;
+                            }
+                        }
+                    }
+                }
+                if (total >= 4) {return false;}
+            }
+        }
+    }
+    return true;
+}
+
 void gameControl(SDL_Renderer* &renderer) {
     srand(time(0));
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 155);
     SDL_RenderClear(renderer);
+
     //init imgs
     SDL_Surface* no1 = SDL_LoadBMP("1.bmp");
     SDL_Surface* no2 = SDL_LoadBMP("2.bmp");
@@ -36,10 +62,6 @@ void gameControl(SDL_Renderer* &renderer) {
     numberTexture[7] = SDL_CreateTextureFromSurface(renderer, no8);
     numberTexture[8] = SDL_CreateTextureFromSurface(renderer, no9);
     numberTexture[9] = SDL_CreateTextureFromSurface(renderer, no10);
-
-    //SDL_Rect dstrect = {10,10,10,10};
-    //SDL_RenderCopy(renderer, bombTexture, NULL, &dstrect);
-    //SDL_RenderPresent(renderer);
     SDL_FreeSurface(no1);
     SDL_FreeSurface(no2);
     SDL_FreeSurface(no3);
@@ -68,16 +90,26 @@ void gameControl(SDL_Renderer* &renderer) {
             grid[i][j].show(renderer, numberTexture[8], numberTexture);
         }
     }
+
     //SPREAD THE BOMBS
     int bombCreated = 0;
+
     while(bombCreated < TOTALBOMBS) {
         int i = betweenZeroAnd(ROWS);
         int j = betweenZeroAnd(COLS);
-        if(grid[i][j].hasBomb == false) {
+
+        //if(grid[i][j].hasBomb == false) {
+            //grid[i][j].hasBomb = true;
+            //grid[i][j].neighborCount = -1;
+            //bombCreated++;
+        //}
+
+        if(!(grid[i][j].hasBomb) && checkSurround(i,j, grid)){
             grid[i][j].hasBomb = true;
             grid[i][j].neighborCount = -1;
             bombCreated++;
         }
+
     }
 
 
@@ -100,12 +132,6 @@ void gameControl(SDL_Renderer* &renderer) {
             grid[i][j].neighborCount = total;
         }
     }
-    /*
-    for(int i = 0; i < ROWS; ++i) {
-        for(int j = 0; j < COLS; ++j) {
-            grid[i][j].show(renderer, bombTexture, numberTexture);
-        }
-    } */
 
     //Always keep the "play again" button
     SDL_Rect playAgainRect = {10, 10,107,29}; // Positioning the button
@@ -124,10 +150,12 @@ void gameControl(SDL_Renderer* &renderer) {
 
     int cellLeft = ROWS*COLS;
     while (isRunning){
+        // CHECK WIN
         if(cellLeft == TOTALBOMBS){
-            SDL_Rect rect = {200,10,200, 30};
+            SDL_Rect rect = {300,10,200, 30};
             SDL_RenderCopy(renderer, numberTexture[9], NULL, &rect);
         }
+
         while (SDL_PollEvent(&e) != 0) {
             if (e.type == SDL_QUIT){
                 isRunning = false;
@@ -136,15 +164,13 @@ void gameControl(SDL_Renderer* &renderer) {
             else if (e.type == SDL_MOUSEMOTION){
                 double x = e.button.x;
                 double y = e.button.y;
+                curHover->unhover(renderer);
                 if(x > GRID_START_X && x < GRID_START_X+GRID_WIDTH && y > GRID_START_Y && y < GRID_START_Y+GRID_HEIGHT){
                     curHover->unhover(renderer);
                     curHover = &grid[(int)(x-GRID_START_X)/WIDTH][(int)(y-GRID_START_Y)/HEIGHT];
                     curHover->hover(renderer);
 
-                } //else { //lag
-                    //curHover->unhover(renderer);
-                   // SDL_RenderPresent(renderer);
-                //}
+                }
             }
             else if (e.type == SDL_MOUSEBUTTONDOWN) {
                 double x = e.button.x;

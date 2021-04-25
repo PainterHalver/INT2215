@@ -761,17 +761,17 @@
 1618969641 c:\users\calputer\desktop\int 2215\btl c++ sdl\the project\cell.h
 	<SDL.h>
 
-1617704034 c:\users\calputer\desktop\int 2215\btl c++ sdl\the project\gamecontrol.h
+1619338854 c:\users\calputer\desktop\int 2215\btl c++ sdl\the project\gamecontrol.h
 	"Cell.h"
 	"const.h"
 	<time.h>
 
-1619308795 c:\users\calputer\desktop\int 2215\btl c++ sdl\the project\const.h
+1619340775 c:\users\calputer\desktop\int 2215\btl c++ sdl\the project\const.h
 
 1618969653 source:c:\users\calputer\desktop\int 2215\btl c++ sdl\the project\cell.cpp
 	"Cell.h"
 
-1618969779 source:c:\users\calputer\desktop\int 2215\btl c++ sdl\the project\gamecontrol.cpp
+1619339801 source:c:\users\calputer\desktop\int 2215\btl c++ sdl\the project\gamecontrol.cpp
 	"gameControl.h"
 
 1618844604 c:\users\calputer\desktop\int 2215\btl c++ sdl\the project\initsdl.h
